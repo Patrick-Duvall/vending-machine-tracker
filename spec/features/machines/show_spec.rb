@@ -10,11 +10,16 @@ describe "as a visitor" do
     before :each do
 
       @owner = Owner.create!(name: "Tom")
-      @machine = @owner.machines.create!(location: "Mall")
-      @candy = @machine.snacks.create!(name: "Twix", price: 1.25)
-      @chips = @machine.snacks.create!(name: "Lays", price: 1.75)
-      visit machine_path(@machine)
+
+      @machine_1 = @owner.machines.create!(location: "Mall")
+
+      @candy = Snack.create!(name: "Twix", price: 1.25)
+      @chips = Snack.create!(name: "Lays", price: 1.75)
+
+      @machine_snack_1 = MachineSnack.create(machine_id: @machine_1, snack_id: @candy)
+      @machine_snack_2 = MachineSnack.create(machine_id: @machine_1, snack_id: @chips)
     end
+
 
     it "shows all snack names and prices" do
 
@@ -25,7 +30,7 @@ describe "as a visitor" do
     end
 
     it "Shows an average snack price" do
-      expect(page).to have_content("Average Price: $1.5")
+      expect(page).to have_content("Average Price: $1.50")
 
     end
 
